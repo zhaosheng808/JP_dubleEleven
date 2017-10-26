@@ -111,7 +111,7 @@
             <!--<p id="speedScore"></p>-->
             <p class="test_slogan">不是每个人都见过凌晨4点半的洛杉矶<br/>但你必须要点中午夜12点的购物车</p>
             <div class="btn_wrapper">
-                <span class="btn">查看结论报告</span>
+                <span class="btn" id="seeResult">查看结论报告</span>
             </div>
         </section>
     </div>
@@ -275,6 +275,9 @@
 //                    $('.next_step').off();
                     console.log(_this.step);
                     _this.stepChange(1500);
+                });
+                $('#seeResult').click(function () {
+                    alert('再多等两天~~~~~~~~~ -。-');
                 })
             }
         };

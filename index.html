@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>蕉片双11活动</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        html,body{
+            height: 100%;
+        }
+        .wrapper{
+            max-width: 750px;
+            min-height: 100%;
+            margin: 0 auto;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+            background: #f7f7f7;
+            font-size: 14px;
+        }
+        h3{
+            text-align: center;
+        }
+        .center_box{
+            width: 150px;
+            height: 150px;
+            margin: 50px auto;
+            border: 1px solid red;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .test_result{
+            text-align: center;
+        }
+        .btn_wrapper{
+            text-align: center;
+        }
+        .btn{
+            display: inline-block;
+            padding: 10px 20px;
+            background: coral;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <section id="step1">
+        <h3>第一项 手机多任务处理能力检测</h3>
+        <div class="center_box">
+            <div class="show_message">检测中...</div>
+        </div>
+        <p class="test_result">打铁还需自身硬<br>抢货总得设备强</p>
+        <div class="btn_wrapper">
+            <span class="btn next_step">下一项</span>
+        </div>
+    </section>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script>
+    (function () {
+        function AppManage() {
+            this.step = 0;
+            this.init();
+        }
+        AppManage.prototype = {
+            init: function () {
+                this.event();
+                console.log(111);
+            },
+            event: function () {
+                var _this = this;
+                $('.next_step').click(function () {
+                    _this.step++;
+//                    $(this).fadeOut();
+//                    $('.next_step').off();
+                    console.log(_this.step);
+                })
+            }
+        };
+        window.AppManage = AppManage;
+    })();
+    var app = new AppManage();
+</script>
+</body>
+</html>

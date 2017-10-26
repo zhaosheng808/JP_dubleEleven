@@ -1,0 +1,24 @@
+{
+  "name": "jp_dubleeleven",
+  "version": "1.0.0",
+  "description": "H5蕉片双11",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "browser-sync": "^2.18.13",
+    "gulp": "^3.9.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "gulp devServer"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhaosheng808/JP_dubleEleven.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhaosheng808/JP_dubleEleven/issues"
+  },
+  "homepage": "https://github.com/zhaosheng808/JP_dubleEleven#readme"
+}

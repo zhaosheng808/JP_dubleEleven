@@ -15,12 +15,27 @@
         .wrapper{
             max-width: 750px;
             min-height: 100%;
+            background: #f7f7f7;
             margin: 0 auto;
+            overflow: hidden;
+            font-size: 14px;
+            position: relative;
+        }
+        .wrapper section{
+            /*height: 100%;*/
+            /*width: 100%;*/
+            /*position: absolute;*/
+            /*top: 0;*/
+            /*left: 0;*/
+        }
+        .inner{
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
             padding: 10px;
             box-sizing: border-box;
-            overflow: hidden;
-            background: #f7f7f7;
-            font-size: 14px;
         }
         h3{
             text-align: center;
@@ -34,10 +49,11 @@
             align-items: center;
             justify-content: center;
         }
-        .test_result{
+        .test_slogan{
             text-align: center;
         }
         .btn_wrapper{
+            display: none;
             text-align: center;
         }
         .btn{
@@ -46,33 +62,210 @@
             background: coral;
             cursor: pointer;
         }
+        #step2,#step3{
+            display: none;
+        }
+        .section_tips{
+            text-align: center;
+        }
+        .active_section{
+            display: block!important;
+        }
     </style>
 </head>
 <body>
 <div class="wrapper">
-    <section id="step1">
-        <h3>第一项 手机多任务处理能力检测</h3>
-        <div class="center_box">
-            <div class="show_message">检测中...</div>
-        </div>
-        <p class="test_result">打铁还需自身硬<br>抢货总得设备强</p>
-        <div class="btn_wrapper">
-            <span class="btn next_step">下一项</span>
-        </div>
-    </section>
+    <div class="inner">
+        <section id="step1">
+            <h3>第一项 手机多任务处理能力检测</h3>
+            <div class="center_box">
+                <div class="show_message">检测中...</div>
+            </div>
+            <p id="osMessage"></p>
+            <p id="osScore"></p>
+            <p class="test_slogan">打铁还需自身硬<br>抢货总得设备强</p>
+            <div class="btn_wrapper">
+                <span class="btn next_step">下一项</span>
+            </div>
+        </section>
+        <section id="step2">
+            <h3>第二项 网速检测</h3>
+            <div class="center_box">
+                <div class="show_message">检测中...</div>
+            </div>
+            <p id="speedMessage"></p>
+            <p id="speedScore"></p>
+            <p class="test_slogan">网有多快心就有多狠</p>
+            <div class="btn_wrapper">
+                <span class="btn next_step">下一项</span>
+            </div>
+        </section>
+        <section id="step3" class="">
+            <h3>第三项  屏幕响应速度</h3>
+            <div class="center_box">
+                <div class="show_message">5</div>
+            </div>
+            <button id="readyOk">准备好了</button>
+            <p class="section_tips">倒计时结束时点击秒杀按钮</p>
+            <!--<p id="speedMessage"></p>-->
+            <!--<p id="speedScore"></p>-->
+            <p class="test_slogan">不是每个人都见过凌晨4点半的洛杉矶<br/>但你必须要点中午夜12点的购物车</p>
+            <div class="btn_wrapper">
+                <span class="btn">查看结论报告</span>
+            </div>
+        </section>
+    </div>
 </div>
 
 <script src="js/jquery.min.js"></script>
 <script>
     (function () {
         function AppManage() {
-            this.step = 0;
+            this.step = 1;
             this.init();
         }
         AppManage.prototype = {
             init: function () {
+                var _this = this;
                 this.event();
+                this.stepThird();
+                setTimeout(function () {
+                    _this.stepFirst();
+                }, 2000);
+            },
+            getRandomScore: function (min, max) {
+                return Math.floor( Math.random() * (max - min + 1) + min );
+            },
+            stepFirst: function(){
+                this.checkOS();
+                $('#step1 .btn_wrapper').fadeIn();
+                $('#step1 .test_slogan').hide();
+            },
+            stepSecond_show: function () {
+                var _this = this;
+                $('#step1').hide();
+                $('#step2').slideDown();
+                setTimeout(function () {
+                    _this.stepSecond();
+                }, 2000);
+            },
+            stepSecond: function () {
+                console.log('进入下载');
+                var Rand = Math.random();
+                var RandNum = 1 + Math.round(Rand * 99);
+                var szsrc = 'http://toutiao-cdn-jper.foundao.com/kjjy_cms/4096.jpg?id=' + RandNum;
+//                var szsrc = 'http://www.newscctv.net/tap2cdn/video/images/images/10026/142/1008/20171024212723245.jpg?id=' + RandNum;
+                var st = new Date();
+                var imgObject = new Image();
+                imgObject.crossOrigin = "*";
+                imgObject.src = szsrc;
+                console.log('进入下载2');
+                imgObject.onload = function () {
+                    var fs = 3.89 * 1024;  //图片文件大小(KB)
+                    var et = new Date();
+                    var time_lag = (et - st) / 1000;  // 时间差，毫秒 ->秒
+                    console.log(time_lag, '下载总时间');
+                    var speed = fs / time_lag;
+
+                    $('#speedScore').text('你的网速为： ' + speed + 'KB/秒');
+                    $('#step2 .test_slogan').hide();
+                    $('#step2 .btn_wrapper').fadeIn();
+                    $('#step2 .show_message').text('任何秒杀对你来说都是慢镜头');
+                }
+            },
+            stepThird_show: function () {
+                $('#step2').hide();
+                $('#step3').slideDown();
+                this.stepThird();
+
+            },
+            stepThird: function () {
+                var nowNum = 5;
+                $('#readyOk').click(function () {
+                    $(this).hide();
+                    var interval = setInterval(function () {
+//                    console.log('---');
+                        if(nowNum <= 0){
+                            clearInterval(interval);
+                            $('#step3 .show_message').text('点我');
+                            var startTime = new Date();
+                            $('#step3 .center_box').click(function () {
+                                var endTime = new Date();
+                                var time_lag = (endTime - startTime) / 1000;  // 时间差，毫秒 ->秒
+                                $('#step3 .section_tips').text('反应时间为' + time_lag + 's');
+                                console.log(time_lag, 'time_lag');
+                                $(this).off();
+                                $('#step3 .test_slogan').hide();
+                                $('#step3 .btn_wrapper').show();
+                            })
+                        } else {
+                            nowNum = nowNum - 0.1;
+                            var nowNumString = nowNum.toString();
+                            var showTime = nowNumString.substr (0,3);
+                            $('#step3 .show_message').text(showTime);
+                        }
+                    }, 100);
+                });
+
+
+            },
+            checkOS: function () {
+                var u = navigator.userAgent;
+                console.log(u, 'u');
                 console.log(111);
+                $('#osMessage').text(u);
+
+                var osScore = 0;
+                var osType = '未知';
+                /*----------------Android------------------------------*/
+                if(/android/i.test(navigator.userAgent)){      //  Android
+                    osScore = this.getRandomScore(12, 15);           // android 12-15
+                    osType = 'Android';
+                    if (navigator.userAgent.match(/Android [8]/i)) { // android 8 18
+                        osScore = 18;
+                        osType = 'Android8';
+                    } else if (navigator.userAgent.match(/Android [7]/i)) {  // android 7 15-18
+                        osScore = this.getRandomScore(15, 18);
+                        osType = 'Android7';
+                    }
+                }
+                /*----------------iOS------------------------------*/
+                if(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){ // iOS
+                    osScore = this.getRandomScore(15, 20);           // ios 15-20
+                    osType = 'iOS';
+                    if (navigator.userAgent.match(/OS 11/i)) { // iOS 11
+                        osScore = 20;
+                        osType = 'iOS11';
+                    } else if (navigator.userAgent.match(/OS 10/i)) {  // android 10 15-18
+                        osScore = 19;
+                        osType = 'iOS10';
+                    } else if (navigator.userAgent.match(/OS 9/i)) {  // android 10 15-18
+                        osScore = this.getRandomScore(18, 19);
+                        osType = 'iOS9';
+                    }
+                }
+                console.log(osScore, 'osScore');
+                var percentage = 0;
+                if (osScore >= 15) {
+                    percentage = this.getRandomScore(80, 92);
+                } else {
+                    percentage = this.getRandomScore(60, 75);
+                }
+                var stepResult = '你打败了 '+percentage+'% 的用户';
+                $('#step1 .show_message').text(stepResult);
+                $('#osScore').text('操作系统为: '+osType+' 多任务处理能力分数为：' + osScore);
+            },
+            stepChange: function () {
+                var step = this.step;
+                if (step===0) {
+
+                } else if (step===1) { // 第一项
+
+                } else if (step===2) { // 第二项
+                    this.stepSecond_show();
+                } else if (step===3) {
+                    this.stepThird_show();
+                }
             },
             event: function () {
                 var _this = this;
@@ -81,12 +274,15 @@
 //                    $(this).fadeOut();
 //                    $('.next_step').off();
                     console.log(_this.step);
+                    _this.stepChange(1500);
                 })
             }
         };
         window.AppManage = AppManage;
     })();
-    var app = new AppManage();
+    $(function () {
+        var app = new AppManage();
+    });
 </script>
 </body>
 </html>

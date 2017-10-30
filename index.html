@@ -17,9 +17,14 @@
             min-height: 100%;
             background: #f7f7f7;
             margin: 0 auto;
+            box-sizing: border-box;
             overflow: hidden;
             font-size: 14px;
             position: relative;
+        }
+        .wrapper .inner{
+            min-height: 100%;
+            margin: 10px;
         }
         .wrapper section{
             display: none;
@@ -29,15 +34,7 @@
             /*top: 0;*/
             /*left: 0;*/
         }
-        .inner{
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            padding: 10px;
-            box-sizing: border-box;
-        }
+
         h3{
             text-align: center;
         }
@@ -54,7 +51,6 @@
             text-align: center;
         }
         .btn_wrapper{
-            display: none;
             text-align: center;
         }
         .btn{
@@ -62,6 +58,9 @@
             padding: 10px 20px;
             background: coral;
             cursor: pointer;
+        }
+        .hide{
+            display: none;
         }
         .section_tips{
             text-align: center;
@@ -75,7 +74,15 @@
         #osScore{
             margin-top: 50px;
         }
+        #result{
+            text-align: center;
+        }
+        #result .btn_wrapper{
+            display: block;
+            margin-bottom: 10px;
+        }
     </style>
+
 </head>
 <body>
 <div class="wrapper">
@@ -95,7 +102,7 @@
             <p id="osMessage"></p>
             <p id="osScore"></p>
             <p class="test_slogan">打铁还需自身硬<br>抢货总得设备强</p>
-            <div class="btn_wrapper">
+            <div class="btn_wrapper hide">
                 <span class="btn next_step">下一项</span>
             </div>
         </section>
@@ -107,35 +114,54 @@
             <p id="speedMessage"></p>
             <p id="speedScore"></p>
             <p class="test_slogan">网有多快心就有多狠</p>
-            <div class="btn_wrapper">
+            <div class="btn_wrapper hide">
                 <span class="btn next_step">下一项</span>
             </div>
         </section>
-        <section id="step3" class="">
+        <section id="step3">
             <h3>第三项  屏幕响应速度</h3>
             <div class="center_box">
                 <div class="show_message">5</div>
             </div>
-            <button id="readyOk">准备好了</button>
             <p class="section_tips">倒计时结束时点击秒杀按钮</p>
+            <button id="readyOk">准备好了</button>
+
+            <p class="click_message">你的反应时间为 <span class="click_time">0</span>s</p>
             <!--<p id="speedMessage"></p>-->
             <!--<p id="speedScore"></p>-->
             <p class="test_slogan">不是每个人都见过凌晨4点半的洛杉矶<br/>但你必须要点中午夜12点的购物车</p>
+            <div class="btn_wrapper hide">
+                <span class="btn next_step">查看结论报告</span>
+            </div>
+        </section>
+        <section id="result" class="">
+            <p>我的双11手机战斗力报告</p>
+            <p><span class="totalScore"></span>分</p>
+            <p>结论：<span>不抢货对不起你的手机</span></p>
             <div class="btn_wrapper">
-                <span class="btn" id="seeResult">查看结论报告</span>
+                <span class="btn" id="btn_share">剁手不能我一人</span>
+            </div>
+            <div class="btn_wrapper">
+                <span class="btn" id="play_again">在玩一次</span>
+            </div>
+            <div class="sponsor">
+                <p>本测评由【蕉片】提供全程赞助</p>
             </div>
         </section>
     </div>
 </div>
 
 <script src="js/jquery.min.js"></script>
+<script src="js/wxLogin.js"></script>
 <script src="js/appManage.js"></script>
+
 <script>
     $(function () {
+        var wxLogin = new WxLogin();
         var app = new AppManage();
-        $('#index_page').fadeIn(function () {
-            $('#index_page .btn_wrapper').show();
-        });
+//        $('#index_page').fadeIn(function () {
+//            $('#index_page .btn_wrapper').show();
+//        });
     });
 </script>
 </body>

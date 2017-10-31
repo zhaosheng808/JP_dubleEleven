@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <title>分享</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        html,body{
+            height: 100%;
+        }
+        .wrapper{
+            max-width: 750px;
+            min-height: 100%;
+            background: #f7f7f7;
+            margin: 0 auto;
+            box-sizing: border-box;
+            overflow: hidden;
+            font-size: 14px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div>分享页面</div>
+    <a href="./index.html">参与活动</a>
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/app_config.js"></script>
+<script src="js/jweixin-1.2.0.js"></script>
+<script src="js/wx_config.js"></script>
+<script>
+    $(function () {
+        var wxconfig = new WxConfig();
+        var appid = app_config.appID;
+        var link = window.location.href;
+        var title = '做短视频，我用蕉片';
+        var desc = '蕉片双11活动等你来参与-活动详情';
+        var imgUrl = app_config.base_url + '/images/wxShare.png';
+        wxconfig.init({
+            appid: appid,
+            url: window.location.href,
+            link: link,
+            debug: false,
+            title: title,
+            desc: desc,
+            imgUrl: imgUrl
+        });
+    })
+</script>
+</body>
+</html>

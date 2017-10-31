@@ -3,7 +3,10 @@
  */
 (function () {
     function WxLogin() {
-        this.appID = 'wxd142e84bcff75c90';
+        this.appID = app_config.appID;
+        this.base_url = 'base_url';
+        this.baseLink = _Config.appBaseLink;
+        this.wxconfig = new WxConfig();
         this.init();
     }
     WxLogin.prototype = {
@@ -11,9 +14,12 @@
             if (this.isWxBrowser()) {
                 if (this.getOpenId()) {
                     console.log('有用户信息');
+                    this.login_success();
                 } else {
                     this.authorization();
                 }
+            } else {  // 非微信环境
+                this.login_success();
             }
         },
         getOpenId: function () {
@@ -28,33 +34,71 @@
             var _params = this.GetParams();
             var code = _params['code'];
             var appId = this.appID;
-            console.log(code, 'code');
             if (!code) {
                 var callbackurl = window.location.href;
                 // 请求此链接若微信用户同意授权重定向到设置的URL中code也会加载到其中
                 var jump_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri=" + encodeURIComponent(callbackurl) + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
-                console.log(jump_url, 'jump_url');
                 window.location.href = jump_url;
             } else {
-                var appid = this.appID;
-                // 第三方登录授权获取access_token
                 $.ajax({
-                    type: 'get',
+                    type: 'GET',
                     url: 'https://api-live.foundao.com/base/wx_userinfo_redis.php',
-                    dataType: 'json',
+                    dataType: 'jsonp',
                     data: {
-                        appid: this.appID,
+                        appid: appId,
                         code: code
                     },
-                }).done(function (resp) {
-                    alert(resp);
-                    if (resp.rusult == 0) {
-                        openid = resp.data.openid;
-                        console.log(resp);
-                    } else {
-                        alert(resp.msg)
+                    success: function (result) {
+                        if (result.result == 0) {
+                            console.log(result.data);
+                            localStorage.setItem('td_openid', result.data.openid);
+                            localStorage.setItem('td_nickname', result.data.nickname);
+                            localStorage.setItem('td_avatar', result.data.headimgurl);
+                            localStorage.setItem('td_sex', result.data.sex);
+                            _this.login_success();
+                        } else {
+                            alert('获取用户信息错误')
+                        }
                     }
                 })
+            }
+        },
+        // 授权成功
+        login_success: function () {
+            this.configWXsdk();
+            // 实例化app信息
+            new AppManage();
+        },
+        // 默认的微信配置
+        configWXsdk: function (obj) {
+            if (!obj) {
+                obj = {};
+            }
+            var wxconfig = this.wxconfig;
+            var appid = this.appID;
+            var link = obj.link || this.baseLink;
+            var title = obj.title || '做短视频，我用蕉片';
+            var desc = obj.desc || '蕉片双11活动等你来参与';
+            var imgUrl = obj.imgUrl || app_config.base_url + '/images/wxShare.png';
+            wxconfig.init({
+                appid: appid,
+                url: window.location.href,
+                link: link,
+                debug: false,
+                title: title,
+                desc: desc,
+                imgUrl: imgUrl
+            });
+        },
+        // 拉取用户信息
+        getUserInfo: function () {
+            var td_uid = localStorage.getItem('td_uid');
+            var td_avatar = localStorage.getItem('td_avatar');
+            var td_nickname = localStorage.getItem('td_nickname');
+            return {
+                'td_uid': td_uid,
+                'td_avatar': td_avatar || './images/wxShare.png',
+                'td_nickname': td_nickname || '小顺子'
             }
         },
         GetParams: function () {
